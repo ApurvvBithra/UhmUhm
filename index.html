@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff0077;
+            --accent: #00ffcc;
+            --bg-grad: linear-gradient(45deg, #ff00cc, #3333ff, #ff0077, #6a11cb);
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: #000; color: white;
+            overflow: hidden; text-align: center;
+        }
+
+        #bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-grad); background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -1; filter: blur(15px); opacity: 0.7;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .slide {
+            position: absolute; width: 100%; height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 20px; box-sizing: border-box;
+            transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hidden { opacity: 0; pointer-events: none; transform: translateY(30px) scale(0.95); }
+
+        .fade-in-text { animation: fadeInUp 1.2s ease forwards; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        button {
+            padding: 18px 40px; border: none; border-radius: 50px;
+            font-size: 18px; font-weight: 600; cursor: pointer;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            margin: 10px; text-transform: uppercase;
+        }
+        
+        button:active { transform: scale(0.9); }
+        .yesBtn { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
+        .noBtn { background: rgba(255, 23, 68, 0.8); color: white; box-shadow: 0 0 15px rgba(255, 23, 68, 0.5); }
+
+        .emoji-rain, .heart-pop {
+            position: fixed; z-index: 100; pointer-events: none;
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes popOut { 
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(1.5) translateY(-100px); opacity: 0; }
+        }
+
+        #typing-subtext { font-size: 1.1rem; min-height: 1.5em; margin-top: 20px; padding: 0 10%; }
+
+        .heartbeat { animation: heartbeat 1.5s infinite; background: #ff004c !important; color: white !important; box-shadow: 0 0 30px #ff004c; }
+        @keyframes heartbeat { 0%, 28% { transform: scale(1); } 14% { transform: scale(1.1); } }
+
+        #match-popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 255, 255, 0.95); color: black; padding: 40px; border-radius: 30px;
+            z-index: 200; transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 100px var(--accent); width: 80%; max-width: 400px;
+        }
+        #match-popup.show { transform: translate(-50%, -50%) scale(1); }
+    </style>
+</head>
+<body>
+
+<audio id="bgMusic" src="https://dl.dropboxusercontent.com/scl/fi/rc83czy49kvp7nrron543/The-Police-Every-Breath-You-Take-Lyrics.mp3?rlkey=sfet91wpsxyc5zxnaj9i8xpbu&st=bliqln85&dl=1"></audio>
+<div id="bg-overlay"></div>
+
+<div id="match-popup">
+    <h1 style="color: #ff0077; margin-bottom: 5px;">❤️ SUCCESS! ❤️</h1>
+    <h3 style="margin-top: 0;">YOU ARE OFFICIALLY MATCHED!</h3>
+    <p>Go back to our chat now. 😉</p>
+</div>
+
+<div id="s1" class="slide">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 4rem; color: var(--accent); text-shadow: 0 0 20px var(--accent);">KRISHA</h1>
+    <p class="fade-in-text">I have something remarkably important to tell you.</p>
+    <button class="yesBtn" onclick="startAll()">I'M READY ❤️</button>
+</div>
+
+<div id="s2" class="slide hidden">
+    <h2 style="color: var(--accent);">WAIT A MOMENT...</h2>
+    <h1 class="fade-in-text">May I ask you something?</h1>
+    <div>
+        <button class="yesBtn" onclick="next(3)">YES</button>
+        <button class="noBtn" id="no1">NO</button>
+    </div>
+</div>
+
+<div id="s3" class="slide hidden">
+    <h1 style="font-size: 2.5rem;" class="fade-in-text">Can we be together, please?</h1>
+    <div>
+        <button class="yesBtn" onclick="next(4)">YES ❤️</button>
+        <button class="noBtn" id="no2">NO</button>
+    </div>
+</div>
+
+<div id="s4" class="slide hidden" onclick="next(5)" style="cursor: pointer;">
+    <h2 style="border-bottom: 3px solid var(--accent); color: var(--accent);">MY HUMBLE RESUME 🧾</h2>
+    <div style="margin-top: 20px;">
+        <p class="fade-in-text" style="animation-delay: 0.2s;">😂 UNMATCHED HUMOUR</p>
+        <p class="fade-in-text" style="animation-delay: 0.4s;">🧸 PROTECTIVE CARE</p>
+        <p class="fade-in-text" style="animation-delay: 0.6s;">💖 PURE AFFECTION</p>
+        <p class="fade-in-text" style="animation-delay: 0.8s;">📚 UNLIMITED GYAN</p>
+    </div>
+</div>
+
+<div id="s5" class="slide hidden">
+    <h2 class="fade-in-text">If you say no, you'd be the very first girl ever to reject me...</h2>
+    <h2 id="msg2" class="hidden" style="color: var(--accent); text-shadow: 0 0 10px var(--accent);">Because I've never actually had the courage to ask anyone before!</h2>
+    <div id="proceed" class="hidden"><button class="yesBtn" onclick="next(6)">NEXT ❤️</button></div>
+</div>
+
+<div id="s6" class="slide hidden">
+    <h1>WHY YOU?</h1>
+    <h3 style="font-size: 2.2rem;">BECAUSE YOU'RE <span style="color:var(--accent);">INCREDIBLY SWEET</span></h3>
+    <div id="typing-subtext"></div>
+</div>
+
+<div id="s7" class="slide hidden">
+    <h2 style="color: var(--accent);">Listen intimately...</h2>
+    <p style="font-size: 1.2rem; max-width: 500px; line-height: 1.6;" class="fade-in-text">
+        I know we haven't talked much yet, but you can give me a single, golden chance and see for yourself.
+    </p>
+    <div style="display: flex; gap: 10px;">
+        <button class="yesBtn" onclick="next('Final')">I'll give it a shot ❤️</button>
+        <button class="noBtn" id="no3">No</button>
+    </div>
+</div>
+
+<div id="sFinal" class="slide hidden" style="background: #000;">
+    <h1 id="krisha-name" class="hidden" style="font-size: 4.5rem; color: var(--primary);">KRISHA...</h1>
+    <div id="final-box" class="hidden">
+        <p style="font-style: italic; color: #888;">"I'll be watching you..."</p>
+        <button class="yesBtn heartbeat" onclick="showMatch()">BE MINE OFFICIALLY? 💍</button>
+        <br><br>
+        <button class="noBtn" id="no-final" style="font-size: 10px; opacity: 0.5;">NO</button>
+    </div>
+</div>
+
+<script>
+    function startAll() {
+        const music = document.getElementById("bgMusic");
+        music.currentTime = 10;
+        music.play().catch(e => console.log("Audio requires interaction"));
+        next(2);
+    }
+
+    function next(n) {
+        document.querySelectorAll(".slide").forEach(s => s.classList.add("hidden"));
+        const targetId = (n === 'Final') ? "sFinal" : "s" + n;
+        setTimeout(() => document.getElementById(targetId).classList.remove("hidden"), 100);
+
+        if(n == 5) {
+            setTimeout(() => {
+                const m2 = document.getElementById("msg2");
+                m2.classList.remove("hidden"); m2.classList.add("fade-in-text");
+                triggerEmojiRain("😂");
+            }, 1800);
+            setTimeout(() => document.getElementById("proceed").classList.remove("hidden"), 3500);
+        }
+        if(n == 6) setTimeout(typeWriterEffect, 800);
+        if(n == 'Final') triggerDrama();
+    }
+
+    function typeWriterEffect() {
+        const text = "I know you from a long time, but never knew to be honest, but still I can tell how kind and caring you are! How intellectual and deep thinker you are, which is the most fascinating part for me!!!";
+        const container = document.getElementById("typing-subtext");
+        let i = 0; container.innerHTML = "";
+        function type() {
+            if (i < text.length) {
+                container.innerHTML += text.charAt(i); i++;
+                setTimeout(type, 35);
+            } else {
+                setTimeout(() => next(7), 4000);
+            }
+        }
+        type();
+    }
+
+    function triggerEmojiRain(symbol) {
+        for(let i=0; i<40; i++) {
+            setTimeout(() => {
+                const e = document.createElement("div");
+                e.className = "emoji-rain"; e.innerText = symbol;
+                e.style.left = Math.random() * 95 + "vw";
+                e.style.top = "-50px";
+                e.style.fontSize = (Math.random() * 20 + 20) + "px";
+                e.style.animation = `fall ${Math.random() * 2 + 2}s linear forwards`;
+                document.body.appendChild(e);
+                setTimeout(() => e.remove(), 4000);
+            }, i * 100);
+        }
+    }
+
+    function triggerDrama() {
+        document.getElementById("bg-overlay").style.opacity = "0";
+        setTimeout(() => { 
+            const name = document.getElementById("krisha-name");
+            name.classList.remove("hidden");
+            name.style.display = "block";
+        }, 1200);
+        setTimeout(() => { 
+            const fb = document.getElementById("final-box");
+            fb.classList.remove("hidden"); fb.classList.add("fade-in-text"); 
+        }, 4000);
+    }
+
+    function showMatch() {
+        document.getElementById("match-popup").classList.add("show");
+        triggerEmojiRain("❤️");
+        triggerEmojiRain("✨");
+    }
+
+    const no1 = document.getElementById("no1");
+    no1.onmouseover = no1.ontouchstart = () => {
+        no1.style.position = "fixed";
+        no1.style.left = Math.max(10, Math.random() * 80) + "vw";
+        no1.style.top = Math.max(10, Math.random() * 80) + "vh";
+    };
+
+    document.getElementById("no2").onclick = document.getElementById("no3").onclick = function() {
+        this.innerText = "YES ❤️";
+        this.className = "yesBtn";
+        const val = (this.id === "no2") ? 4 : 'Final';
+        setTimeout(() => next(val), 600);
+    };
+
+    document.getElementById("no-final").onclick = () => {
+        document.getElementById("no-final").innerText = "ERROR";
+        setTimeout(showMatch, 500);
+    };
+</script>
+</body>
+</html>
