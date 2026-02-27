@@ -59,16 +59,12 @@
         .yesBtn { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent); }
         .noBtn { background: rgba(255, 23, 68, 0.8); color: white; box-shadow: 0 0 15px rgba(255, 23, 68, 0.5); }
 
-        .emoji-rain, .heart-pop {
+        .emoji-rain {
             position: fixed; z-index: 100; pointer-events: none;
         }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-        @keyframes popOut { 
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(1.5) translateY(-100px); opacity: 0; }
-        }
 
-        #typing-subtext { font-size: 1.1rem; min-height: 1.5em; margin-top: 20px; padding: 0 10%; }
+        #typing-subtext { font-size: 1.1rem; min-height: 1.5em; margin-top: 20px; padding: 0 10%; line-height: 1.5; }
 
         .heartbeat { animation: heartbeat 1.5s infinite; background: #ff004c !important; color: white !important; box-shadow: 0 0 30px #ff004c; }
         @keyframes heartbeat { 0%, 28% { transform: scale(1); } 14% { transform: scale(1.1); } }
@@ -84,13 +80,16 @@
 </head>
 <body>
 
-<audio id="bgMusic" src="https://dl.dropboxusercontent.com/scl/fi/rc83czy49kvp7nrron543/The-Police-Every-Breath-You-Take-Lyrics.mp3?rlkey=sfet91wpsxyc5zxnaj9i8xpbu&st=bliqln85&dl=1"></audio>
+<audio id="bgMusic" preload="auto">
+    <source src="https://www.dropbox.com/scl/fi/x4md7jtj1390hshq9tm6l/bairan-animated-love-story-banjaare-official-video_eRUkOZ3M.mp3?rlkey=m1qot7mlt49i7ti3ahau756k6&st=rlwau5zl&dl=1" type="audio/mpeg">
+</audio>
+
 <div id="bg-overlay"></div>
 
 <div id="match-popup">
     <h1 style="color: #ff0077; margin-bottom: 5px;">❤️ SUCCESS! ❤️</h1>
     <h3 style="margin-top: 0;">YOU ARE OFFICIALLY MATCHED!</h3>
-    <p>Go back to our chat now. 😉</p>
+    <p>Redirecting to our chat... 😉</p>
 </div>
 
 <div id="s1" class="slide">
@@ -119,10 +118,10 @@
 <div id="s4" class="slide hidden" onclick="next(5)" style="cursor: pointer;">
     <h2 style="border-bottom: 3px solid var(--accent); color: var(--accent);">MY HUMBLE RESUME 🧾</h2>
     <div style="margin-top: 20px;">
-        <p class="fade-in-text" style="animation-delay: 0.2s;">😂 UNMATCHED HUMOUR</p>
-        <p class="fade-in-text" style="animation-delay: 0.4s;">🧸 PROTECTIVE CARE</p>
-        <p class="fade-in-text" style="animation-delay: 0.6s;">💖 PURE AFFECTION</p>
-        <p class="fade-in-text" style="animation-delay: 0.8s;">📚 UNLIMITED GYAN</p>
+        <p class="fade-in-text" style="animation-delay: 0.2s;">➡ UNMATCHED HUMOUR</p>
+        <p class="fade-in-text" style="animation-delay: 0.4s;">➡ PROTECTIVE CARE</p>
+        <p class="fade-in-text" style="animation-delay: 0.6s;">➡ PURE AFFECTION</p>
+        <p class="fade-in-text" style="animation-delay: 0.8s;">➡ UNLIMITED GYAN</p>
     </div>
 </div>
 
@@ -152,8 +151,8 @@
 <div id="sFinal" class="slide hidden" style="background: #000;">
     <h1 id="krisha-name" class="hidden" style="font-size: 4.5rem; color: var(--primary);">KRISHA...</h1>
     <div id="final-box" class="hidden">
-        <p style="font-style: italic; color: #888;">"I'll be watching you..."</p>
-        <button class="yesBtn heartbeat" onclick="showMatch()">BE MINE OFFICIALLY? 💍</button>
+        <p style="font-style: italic; color: #888;">"..."</p>
+        <button class="yesBtn heartbeat" onclick="showMatch()">BE MINE OFFICIALLY?💗</button>
         <br><br>
         <button class="noBtn" id="no-final" style="font-size: 10px; opacity: 0.5;">NO</button>
     </div>
@@ -162,7 +161,8 @@
 <script>
     function startAll() {
         const music = document.getElementById("bgMusic");
-        music.currentTime = 10;
+        music.currentTime = 0; // Play from the absolute start
+        music.volume = 1.0;
         music.play().catch(e => console.log("Audio requires interaction"));
         next(2);
     }
@@ -230,11 +230,17 @@
     function showMatch() {
         document.getElementById("match-popup").classList.add("show");
         triggerEmojiRain("❤️");
-        triggerEmojiRain("✨");
+        
+        function showMatch() {
+    document.getElementById("match-popup").classList.add("show");
+    triggerEmojiRain("❤️");
+    triggerEmojiRain("✨");
+}
     }
 
     const no1 = document.getElementById("no1");
-    no1.onmouseover = no1.ontouchstart = () => {
+    no1.onmouseover = no1.ontouchstart = (e) => {
+        e.preventDefault();
         no1.style.position = "fixed";
         no1.style.left = Math.max(10, Math.random() * 80) + "vw";
         no1.style.top = Math.max(10, Math.random() * 80) + "vh";
