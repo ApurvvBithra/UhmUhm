@@ -89,7 +89,7 @@
 <div id="match-popup">
     <h1 style="color: #ff0077; margin-bottom: 5px;">❤️ SUCCESS! ❤️</h1>
     <h3 style="margin-top: 0;">YOU ARE OFFICIALLY MATCHED!</h3>
-    <p>Redirecting to our chat... 😉</p>
+    <p>Go back to our chat now. 😉</p>
 </div>
 
 <div id="s1" class="slide">
@@ -161,7 +161,7 @@
 <script>
     function startAll() {
         const music = document.getElementById("bgMusic");
-        music.currentTime = 0; // Play from the absolute start
+        music.currentTime = 0; 
         music.volume = 1.0;
         music.play().catch(e => console.log("Audio requires interaction"));
         next(2);
@@ -170,7 +170,10 @@
     function next(n) {
         document.querySelectorAll(".slide").forEach(s => s.classList.add("hidden"));
         const targetId = (n === 'Final') ? "sFinal" : "s" + n;
-        setTimeout(() => document.getElementById(targetId).classList.remove("hidden"), 100);
+        setTimeout(() => {
+            const el = document.getElementById(targetId);
+            if(el) el.classList.remove("hidden");
+        }, 100);
 
         if(n == 5) {
             setTimeout(() => {
@@ -230,12 +233,7 @@
     function showMatch() {
         document.getElementById("match-popup").classList.add("show");
         triggerEmojiRain("❤️");
-        
-        function showMatch() {
-    document.getElementById("match-popup").classList.add("show");
-    triggerEmojiRain("❤️");
-    triggerEmojiRain("✨");
-}
+        triggerEmojiRain("✨");
     }
 
     const no1 = document.getElementById("no1");
@@ -260,7 +258,3 @@
 </script>
 </body>
 </html>
-
-
-
-
