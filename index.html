@@ -70,7 +70,6 @@
         .heartbeat { animation: heartbeat 1.5s infinite; background: #ff004c !important; color: white !important; box-shadow: 0 0 30px #ff004c; }
         @keyframes heartbeat { 0%, 28% { transform: scale(1); } 14% { transform: scale(1.1); } }
 
-        /* --- CATCHY GLASSMOPHISM POPUP --- */
         #match-popup {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
             background: rgba(255, 255, 255, 0.1); 
@@ -98,7 +97,7 @@
     <div style="font-size: 4rem; margin-bottom: 10px;">✨</div>
     <h1 class="pop-title">IT'S A MATCH!</h1>
     <p class="pop-sub">OUR STORY BEGINS NOW ❤️</p>
-    <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 20px;">Check our chat for a surprise, Krisha. 😉</p>
+    <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 20px;">I'll see you back in our chat, Krisha. 😉</p>
 </div>
 
 <div id="s1" class="slide">
@@ -112,7 +111,7 @@
     <h1 class="fade-in-text">May I ask you something?</h1>
     <div>
         <button class="yesBtn" onclick="next(3)">YES</button>
-        <button class="noBtn" id="no1">NO</button>
+        <button class="noBtn" onclick="next(3)">NO</button>
     </div>
 </div>
 
@@ -120,7 +119,7 @@
     <h1 style="font-size: 2.5rem;" class="fade-in-text">Can we be together, please?</h1>
     <div>
         <button class="yesBtn" onclick="next(4)">YES ❤️</button>
-        <button class="noBtn" id="no2">NO</button>
+        <button class="noBtn" id="no-run">NO</button>
     </div>
 </div>
 
@@ -162,7 +161,7 @@
     </p>
     <div style="display: flex; gap: 10px;">
         <button class="yesBtn" onclick="next('Final')">I'll give it a shot ❤️</button>
-        <button class="noBtn" id="no3">No</button>
+        <button class="noBtn" id="no-force-yes">No</button>
     </div>
 </div>
 
@@ -180,7 +179,6 @@
     function startAll() {
         const music = document.getElementById("bgMusic");
         music.currentTime = 0; 
-        music.volume = 1.0;
         music.play().catch(e => console.log("Audio requires interaction"));
         next(2);
     }
@@ -255,19 +253,20 @@
         triggerEmojiRain("💍");
     }
 
-    const no1 = document.getElementById("no1");
-    no1.onmouseover = no1.ontouchstart = (e) => {
+    // --- HOVER LOGIC MOVED TO PAGE 3 ---
+    const noRun = document.getElementById("no-run");
+    noRun.onmouseover = noRun.ontouchstart = (e) => {
         e.preventDefault();
-        no1.style.position = "fixed";
-        no1.style.left = Math.max(10, Math.random() * 80) + "vw";
-        no1.style.top = Math.max(10, Math.random() * 80) + "vh";
+        noRun.style.position = "fixed";
+        noRun.style.left = Math.max(10, Math.random() * 80) + "vw";
+        noRun.style.top = Math.max(10, Math.random() * 80) + "vh";
     };
 
-    document.getElementById("no2").onclick = document.getElementById("no3").onclick = function() {
+    // Force "Yes" logic for other No buttons
+    document.getElementById("no-force-yes").onclick = function() {
         this.innerText = "YES ❤️";
         this.className = "yesBtn";
-        const val = (this.id === "no2") ? 4 : 'Final';
-        setTimeout(() => next(val), 600);
+        setTimeout(() => next('Final'), 600);
     };
 
     document.getElementById("no-final").onclick = () => {
